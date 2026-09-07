@@ -13,8 +13,8 @@ A paced companion for japa — mantra repetition — spoken aloud or counted in 
 
 ## Where this lives
 
-- **claude.ai Artifact** — pending publish.
-- **GitHub Pages** — pending a repo.
+- **[claude.ai Artifact](https://claude.ai/code/artifact/81bd1971-56c5-4629-b06c-c691a5fa502c)** — private by default; share it from the page's own share menu when you're ready.
+- **GitHub Pages** — not yet set up.
 - `index.html` here is also the source, kept for backup and version history.
 
 ## A note on scope and respect
