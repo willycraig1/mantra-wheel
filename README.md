@@ -14,8 +14,10 @@ A paced companion for japa — mantra repetition — spoken aloud or counted in 
 ## Where this lives
 
 - **[claude.ai Artifact](https://claude.ai/code/artifact/81bd1971-56c5-4629-b06c-c691a5fa502c)** — private by default; share it from the page's own share menu when you're ready.
-- **GitHub Pages** — not yet set up.
+- **[GitHub Pages](https://willycraig1.github.io/mantra-wheel/)** — the same app, served straight from this repo's `main` branch.
 - `index.html` here is also the source, kept for backup and version history.
+
+Both run identical code and behave the same — the log is always local to whichever browser opened it, not tied to the hosting, so there's no sync between them.
 
 ## A note on scope and respect
 
