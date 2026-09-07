@@ -97,7 +97,7 @@
   .resume-row p{ font-size:.9rem; color:var(--ink-soft); line-height:1.5; }
   .resume-actions{ display:flex; gap:10px; margin-top:14px; flex-wrap:wrap; }
 
-  .practice-card{ display:flex; flex-direction:column; gap:22px; }
+  .practice-card{ display:flex; flex-direction:column; gap:22px; padding:30px 26px; }
   .practice-meta{ display:flex; justify-content:space-between; align-items:baseline; font-family:var(--font-mono); font-size:.72rem; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-faint); }
   .practice-trad{ display:inline-flex; align-items:center; gap:7px; }
   .practice-trad .dot{ width:7px; height:7px; border-radius:50%; background:var(--trad-c); }
@@ -113,7 +113,7 @@
   @media (prefers-reduced-motion: reduce){ .mantra-text .word, .mantra-text.text-pulse{ transition:none; animation:none; } }
 
   .beads-wrap{ display:flex; flex-direction:column; align-items:center; gap:8px; padding-top:6px; }
-  #beadSvg{ width:100%; max-width:280px; display:block; }
+  #beadSvg{ width:100%; max-width:360px; display:block; }
   .beads-count{ font-family:var(--font-mono); font-size:.75rem; color:var(--ink-faint); letter-spacing:.04em; }
   circle.bead{ transition:fill .25s ease, opacity .25s ease, stroke .25s ease; }
   circle.bead-upcoming{ fill:var(--surface-2); stroke:var(--line); stroke-width:1.2; }
@@ -254,7 +254,7 @@
       <p class="mantra-meaning" id="mantraMeaning"></p>
 
       <div class="beads-wrap">
-        <svg id="beadSvg" viewBox="0 0 300 300" aria-hidden="true"></svg>
+        <svg id="beadSvg" viewBox="0 0 400 400" aria-hidden="true"></svg>
         <p class="beads-count" id="beadsCount"></p>
       </div>
 
@@ -391,21 +391,27 @@
   var BEADS_PER_ROUND = 108;
 
   // ---------- Bead geometry (108 beads around a loop + 1 guru bead) ----------
+  // At this bead count, the loop has to be sized to the beads, not the other
+  // way around — a radius picked to "look right" for ~55 beads (Rosary
+  // Vigil's count) leaves barely half a bead-width of arc per bead here, so
+  // neighbors visually merge. Sized instead so adjacent regular beads sit a
+  // clear ~1.2 bead-widths apart, center to center.
+  var BEAD_R = 4.0, MARKER_R = 5.4;
   function buildBeadPositions(){
     var positions = [];
-    var cx=150, cy=140, rx=115, ry=100, gapDeg=14;
+    var cx=200, cy=185, rx=185, ry=160, gapDeg=10;
     var startDeg = 90+gapDeg/2, sweepDeg = 360-gapDeg;
     for(var k=0;k<BEADS_PER_ROUND;k++){
       var deg = startDeg + (k/(BEADS_PER_ROUND-1))*sweepDeg;
       var rad = deg*Math.PI/180;
       // Traditional counting markers sit at the quarter points (27/54/81).
       var isMarker = (k % 27) === 0;
-      positions.push({ x: cx+rx*Math.cos(rad), y: cy+ry*Math.sin(rad), r: isMarker?6.2:4.3 });
+      positions.push({ x: cx+rx*Math.cos(rad), y: cy+ry*Math.sin(rad), r: isMarker?MARKER_R:BEAD_R });
     }
     return positions;
   }
   var beadPositions = buildBeadPositions();
-  var guruBead = { x:150, y:140+100, r:8.5 };
+  var guruBead = { x:200, y:185+160, r:9 };
 
   function renderBeadTrack(){
     var svg = document.getElementById("beadSvg");
@@ -461,6 +467,14 @@
   }
 
   // ---------- Chime (Web Audio — no external asset needed) ----------
+  // Tuned to A4 (440Hz, concert pitch) — the note Om is commonly said to be
+  // chanted on. This is the one part of the app that actually *can* be
+  // pinned to an exact pitch: it's a plain oscillator, not a voice.
+  // SpeechSynthesisUtterance.pitch has no such anchor — it's a 0–2
+  // multiplier applied to whatever a given voice's own natural register
+  // happens to be, not a frequency — so the spoken mantra can be nudged
+  // relatively but never tuned to a specific note.
+  var CHIME_HZ = 440;
   var audioCtx = null;
   function playChime(){
     try{
@@ -470,7 +484,7 @@
       [1, 2.4].forEach(function(mult, i){
         var osc = ctx.createOscillator(), gain = ctx.createGain();
         osc.type = "sine";
-        osc.frequency.value = 480 * mult;
+        osc.frequency.value = CHIME_HZ * mult;
         gain.gain.setValueAtTime(0, now);
         gain.gain.linearRampToValueAtTime(i===0?0.16:0.06, now+0.02);
         gain.gain.exponentialRampToValueAtTime(0.0001, now+1.3);
