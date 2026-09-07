@@ -1,39 +1,44 @@
 <meta charset="utf-8">
 <title>Mantra Wheel</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📿</text></svg>">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+Devanagari:wght@400;600&family=Noto+Sans+Tibetan:wght@400;600&family=Noto+Sans+JP:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Martel:wght@600;700;800&family=Mukta:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+Devanagari:wght@400;600&family=Noto+Serif+Tibetan:wght@400;600&family=Noto+Serif+JP:wght@400;600&display=swap">
 <style>
+  /* Palette drawn from the practice's own materials rather than a generic
+     "warm paper" scheme: brass (the mala counter, the prayer-wheel casing)
+     as the working accent, against stone rather than parchment — with
+     marigold-saffron and monastic maroon reserved for the two traditions,
+     never used as the app's own chrome color. */
   :root{
-    --ink:#241C13; --ink-soft:#6B5E4E; --ink-faint:#9C8E7A;
-    --ground:#F3ECE0; --surface:#FFFFFF; --surface-2:#EAE1D0; --line:#DBCFB8;
-    --accent:#C9702E; --accent-strong:#A85A20; --accent-ink:#FFF8EE;
-    --trad-hindu:#C9702E; --trad-buddhist:#7A3B3B;
-    --shadow: 0 1px 2px rgba(36,28,19,.05), 0 8px 24px rgba(36,28,19,.07);
-    --font-display:'Fraunces', Georgia, 'Times New Roman', serif;
-    --font-body:'Work Sans', -apple-system, 'Segoe UI', sans-serif;
+    --ink:#2A2620; --ink-soft:#635A49; --ink-faint:#948A73;
+    --ground:#E7E4D9; --surface:#FCFAF5; --surface-2:#EDE9DC; --line:#D7D1BF;
+    --accent:#93752B; --accent-strong:#79601F; --accent-ink:#FCF6E6;
+    --trad-hindu:#D9791E; --trad-buddhist:#8C2F3D;
+    --shadow: 0 1px 2px rgba(28,24,14,.06), 0 8px 24px rgba(28,24,14,.08);
+    --font-display:'Martel', Georgia, 'Times New Roman', serif;
+    --font-body:'Mukta', -apple-system, 'Segoe UI', sans-serif;
     --font-mono:'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
     --font-deva:'Noto Sans Devanagari', serif;
-    --font-tibetan:'Noto Sans Tibetan', serif;
-    --font-jp:'Noto Sans JP', sans-serif;
-    --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%239C8E7A' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 8l5 5 5-5'/%3E%3C/svg%3E");
+    --font-tibetan:'Noto Serif Tibetan', serif;
+    --font-jp:'Noto Serif JP', serif;
+    --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23948A73' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 8l5 5 5-5'/%3E%3C/svg%3E");
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
-      --ink:#F1E9DA; --ink-soft:#C7B79E; --ink-faint:#8C7C63;
-      --ground:#181209; --surface:#241C13; --surface-2:#2E2416; --line:#473A26;
-      --accent:#E8A55C; --accent-strong:#F0BC78; --accent-ink:#241405;
-      --trad-hindu:#E8A55C; --trad-buddhist:#D98A8A;
-      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 32px rgba(0,0,0,.35);
-      --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%238C7C63' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 8l5 5 5-5'/%3E%3C/svg%3E");
+      --ink:#EFE9DA; --ink-soft:#C2B8A0; --ink-faint:#867C67;
+      --ground:#15130E; --surface:#201C14; --surface-2:#2A2419; --line:#42392A;
+      --accent:#D4AD5C; --accent-strong:#E4C27E; --accent-ink:#241804;
+      --trad-hindu:#E8954A; --trad-buddhist:#D98A8A;
+      --shadow: 0 1px 2px rgba(0,0,0,.35), 0 12px 32px rgba(0,0,0,.4);
+      --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23867C67' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 8l5 5 5-5'/%3E%3C/svg%3E");
     }
   }
   :root[data-theme="dark"]{
-    --ink:#F1E9DA; --ink-soft:#C7B79E; --ink-faint:#8C7C63;
-    --ground:#181209; --surface:#241C13; --surface-2:#2E2416; --line:#473A26;
-    --accent:#E8A55C; --accent-strong:#F0BC78; --accent-ink:#241405;
-    --trad-hindu:#E8A55C; --trad-buddhist:#D98A8A;
-    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 32px rgba(0,0,0,.35);
-    --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%238C7C63' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 8l5 5 5-5'/%3E%3C/svg%3E");
+    --ink:#EFE9DA; --ink-soft:#C2B8A0; --ink-faint:#867C67;
+    --ground:#15130E; --surface:#201C14; --surface-2:#2A2419; --line:#42392A;
+    --accent:#D4AD5C; --accent-strong:#E4C27E; --accent-ink:#241804;
+    --trad-hindu:#E8954A; --trad-buddhist:#D98A8A;
+    --shadow: 0 1px 2px rgba(0,0,0,.35), 0 12px 32px rgba(0,0,0,.4);
+    --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23867C67' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 8l5 5 5-5'/%3E%3C/svg%3E");
   }
 
   *{ box-sizing:border-box; }
@@ -70,8 +75,8 @@
   .mantra-preview{ margin-top:24px; padding:22px 24px; border-radius:14px; background:var(--surface-2); display:flex; flex-direction:column; gap:10px; }
   .mantra-preview .trad-tag{ display:inline-flex; align-items:center; gap:7px; font-family:var(--font-mono); font-size:.68rem; text-transform:uppercase; letter-spacing:.06em; color:var(--trad-c); width:fit-content; }
   .mantra-preview .trad-tag .dot{ width:7px; height:7px; border-radius:50%; background:var(--trad-c); }
-  .mantra-preview .script{ font-size:1.5rem; line-height:1.5; color:var(--ink); }
-  .mantra-preview .translit{ font-family:var(--font-display); font-style:italic; font-size:1.15rem; color:var(--accent); }
+  .mantra-preview .script{ font-size:1.7rem; line-height:1.6; color:var(--ink); text-align:center; padding:10px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); margin-top:4px; }
+  .mantra-preview .translit{ font-family:var(--font-display); font-size:1.05rem; letter-spacing:.02em; color:var(--accent); text-align:center; }
   .mantra-preview .meaning{ font-size:.9rem; color:var(--ink-soft); line-height:1.55; }
   .mantra-preview .source{ font-size:.76rem; color:var(--ink-faint); line-height:1.5; }
 
@@ -96,11 +101,12 @@
   .practice-meta{ display:flex; justify-content:space-between; align-items:baseline; font-family:var(--font-mono); font-size:.72rem; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-faint); }
   .practice-trad{ display:inline-flex; align-items:center; gap:7px; }
   .practice-trad .dot{ width:7px; height:7px; border-radius:50%; background:var(--trad-c); }
-  .mantra-label{ font-size:clamp(1.5rem,3vw,1.9rem); }
-  .mantra-script{ font-size:clamp(1.6rem,3.4vw,2rem); line-height:1.5; color:var(--ink); transition:opacity .18s ease; }
-  .mantra-text{ font-family:var(--font-display); font-size:clamp(1.25rem,2.4vw,1.55rem); font-style:italic; line-height:1.55; color:var(--accent); max-width:60ch; transition:opacity .18s ease; }
+  .mantra-label{ font-size:clamp(1.3rem,2.6vw,1.6rem); }
+  .mantra-plaque{ text-align:center; padding:22px 10px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); display:flex; flex-direction:column; gap:10px; }
+  .mantra-script{ font-size:clamp(1.9rem,4vw,2.5rem); line-height:1.5; color:var(--ink); letter-spacing:.02em; transition:opacity .18s ease; }
+  .mantra-text{ font-family:var(--font-display); font-size:clamp(1.15rem,2.1vw,1.35rem); font-weight:600; letter-spacing:.03em; line-height:1.5; color:var(--accent); transition:opacity .18s ease; }
   .mantra-text .word{ border-radius:4px; padding:0 1px; margin:0 -1px; transition:background-color .12s ease; }
-  .mantra-text .word.is-current{ background:color-mix(in srgb, var(--accent) 38%, transparent); }
+  .mantra-text .word.is-current{ background:color-mix(in srgb, var(--accent) 32%, transparent); }
   .mantra-text.text-pulse{ animation:textPulse .5s ease; }
   @keyframes textPulse{ 0%{ opacity:.45; } 100%{ opacity:1; } }
   .mantra-meaning{ font-size:.92rem; color:var(--ink-soft); line-height:1.55; max-width:58ch; }
@@ -241,8 +247,10 @@
         <span id="practiceProgress"></span>
       </div>
       <h2 class="mantra-label" id="mantraLabel"></h2>
-      <p class="mantra-script" id="mantraScript"></p>
-      <p class="mantra-text" id="mantraText"></p>
+      <div class="mantra-plaque">
+        <p class="mantra-script" id="mantraScript"></p>
+        <p class="mantra-text" id="mantraText"></p>
+      </div>
       <p class="mantra-meaning" id="mantraMeaning"></p>
 
       <div class="beads-wrap">
