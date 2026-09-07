@@ -1,0 +1,1017 @@
+<meta charset="utf-8">
+<title>Mantra Wheel</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📿</text></svg>">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+Devanagari:wght@400;600&family=Noto+Sans+Tibetan:wght@400;600&family=Noto+Sans+JP:wght@400;600&display=swap">
+<style>
+  :root{
+    --ink:#241C13; --ink-soft:#6B5E4E; --ink-faint:#9C8E7A;
+    --ground:#F3ECE0; --surface:#FFFFFF; --surface-2:#EAE1D0; --line:#DBCFB8;
+    --accent:#C9702E; --accent-strong:#A85A20; --accent-ink:#FFF8EE;
+    --trad-hindu:#C9702E; --trad-buddhist:#7A3B3B;
+    --shadow: 0 1px 2px rgba(36,28,19,.05), 0 8px 24px rgba(36,28,19,.07);
+    --font-display:'Fraunces', Georgia, 'Times New Roman', serif;
+    --font-body:'Work Sans', -apple-system, 'Segoe UI', sans-serif;
+    --font-mono:'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    --font-deva:'Noto Sans Devanagari', serif;
+    --font-tibetan:'Noto Sans Tibetan', serif;
+    --font-jp:'Noto Sans JP', sans-serif;
+    --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%239C8E7A' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 8l5 5 5-5'/%3E%3C/svg%3E");
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ink:#F1E9DA; --ink-soft:#C7B79E; --ink-faint:#8C7C63;
+      --ground:#181209; --surface:#241C13; --surface-2:#2E2416; --line:#473A26;
+      --accent:#E8A55C; --accent-strong:#F0BC78; --accent-ink:#241405;
+      --trad-hindu:#E8A55C; --trad-buddhist:#D98A8A;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 32px rgba(0,0,0,.35);
+      --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%238C7C63' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 8l5 5 5-5'/%3E%3C/svg%3E");
+    }
+  }
+  :root[data-theme="dark"]{
+    --ink:#F1E9DA; --ink-soft:#C7B79E; --ink-faint:#8C7C63;
+    --ground:#181209; --surface:#241C13; --surface-2:#2E2416; --line:#473A26;
+    --accent:#E8A55C; --accent-strong:#F0BC78; --accent-ink:#241405;
+    --trad-hindu:#E8A55C; --trad-buddhist:#D98A8A;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 32px rgba(0,0,0,.35);
+    --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%238C7C63' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 8l5 5 5-5'/%3E%3C/svg%3E");
+  }
+
+  *{ box-sizing:border-box; }
+  body{ background:var(--ground); color:var(--ink); font-family:var(--font-body); }
+  h1,h2,h3{ font-family:var(--font-display); font-weight:600; margin:0; text-wrap:balance; }
+  p{ margin:0; }
+  button{ font-family:inherit; }
+  input, select{ font-family:inherit; }
+
+  .page{ max-width:1140px; margin:0 auto; padding:44px 24px 90px; display:grid; grid-template-columns:1.55fr 1fr; gap:36px 44px; align-items:start; }
+  @media (max-width:900px){ .page{ grid-template-columns:1fr; padding:32px 18px 64px; } }
+
+  #stage{ display:flex; flex-direction:column; gap:22px; }
+
+  .masthead{ grid-column:1/-1; display:flex; justify-content:space-between; align-items:flex-end; gap:24px; flex-wrap:wrap; border-bottom:1px solid var(--line); padding-bottom:26px; margin-bottom:4px; }
+  .eyebrow{ font-family:var(--font-mono); text-transform:uppercase; letter-spacing:.12em; font-size:.7rem; color:var(--ink-soft); }
+  .title{ font-size:clamp(2.1rem,4.2vw,2.9rem); margin-top:.2em; }
+  .masthead-note{ font-size:.85rem; color:var(--ink-soft); max-width:32ch; text-align:right; line-height:1.5; }
+
+  .card{ background:var(--surface); border:1px solid var(--line); border-radius:18px; padding:38px; box-shadow:var(--shadow); }
+
+  .setup-card h2{ font-size:1.5rem; }
+  .setup-card .hint{ color:var(--ink-soft); font-size:.92rem; margin-top:10px; line-height:1.5; max-width:52ch; }
+  .field-row{ display:flex; gap:14px; margin-top:22px; flex-wrap:wrap; }
+  .field{ flex:1; min-width:180px; display:flex; flex-direction:column; gap:6px; }
+  .field label{ font-family:var(--font-mono); font-size:.68rem; text-transform:uppercase; letter-spacing:.07em; color:var(--ink-faint); }
+  .field select, .field input[type="text"], .field input[type="number"]{
+    background:var(--ground) var(--select-arrow) no-repeat right 13px center/13px; color:var(--ink); border:1px solid var(--line);
+    border-radius:9px; padding:11px 34px 11px 13px; font-size:.92rem; appearance:none; -webkit-appearance:none; -moz-appearance:none;
+  }
+  .field input[type="text"], .field input[type="number"]{ background-image:none; padding-right:13px; }
+  .field select:focus-visible, .field input:focus-visible{ outline:2px solid var(--accent); outline-offset:1px; }
+
+  .mantra-preview{ margin-top:24px; padding:22px 24px; border-radius:14px; background:var(--surface-2); display:flex; flex-direction:column; gap:10px; }
+  .mantra-preview .trad-tag{ display:inline-flex; align-items:center; gap:7px; font-family:var(--font-mono); font-size:.68rem; text-transform:uppercase; letter-spacing:.06em; color:var(--trad-c); width:fit-content; }
+  .mantra-preview .trad-tag .dot{ width:7px; height:7px; border-radius:50%; background:var(--trad-c); }
+  .mantra-preview .script{ font-size:1.5rem; line-height:1.5; color:var(--ink); }
+  .mantra-preview .translit{ font-family:var(--font-display); font-style:italic; font-size:1.15rem; color:var(--accent); }
+  .mantra-preview .meaning{ font-size:.9rem; color:var(--ink-soft); line-height:1.55; }
+  .mantra-preview .source{ font-size:.76rem; color:var(--ink-faint); line-height:1.5; }
+
+  .intent-field{ margin-top:22px; }
+  .intent-field input{ width:100%; padding:13px 16px; border-radius:10px; border:1px solid var(--line); background:var(--ground); color:var(--ink); font-size:1rem; }
+  .intent-field input:focus-visible{ outline:2px solid var(--accent); outline-offset:1px; }
+  .intent-field .hint{ margin-top:8px; }
+
+  .btn{ font-weight:600; padding:13px 24px; border-radius:999px; border:1px solid transparent; cursor:pointer; font-size:.95rem; transition:background .15s ease, color .15s ease, transform .08s ease; }
+  .btn:active{ transform:scale(.98); }
+  .btn:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .btn-primary{ background:var(--accent); color:var(--accent-ink); }
+  .btn-primary:hover{ background:var(--accent-strong); }
+  .btn-ghost{ background:transparent; border-color:var(--line); color:var(--ink-soft); }
+  .btn-ghost:hover{ color:var(--ink); border-color:var(--ink-faint); }
+  .btn-begin{ margin-top:26px; width:100%; }
+  .resume-row{ margin-top:24px; padding:18px; border-radius:12px; background:var(--surface-2); }
+  .resume-row p{ font-size:.9rem; color:var(--ink-soft); line-height:1.5; }
+  .resume-actions{ display:flex; gap:10px; margin-top:14px; flex-wrap:wrap; }
+
+  .practice-card{ display:flex; flex-direction:column; gap:22px; }
+  .practice-meta{ display:flex; justify-content:space-between; align-items:baseline; font-family:var(--font-mono); font-size:.72rem; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-faint); }
+  .practice-trad{ display:inline-flex; align-items:center; gap:7px; }
+  .practice-trad .dot{ width:7px; height:7px; border-radius:50%; background:var(--trad-c); }
+  .mantra-label{ font-size:clamp(1.5rem,3vw,1.9rem); }
+  .mantra-script{ font-size:clamp(1.6rem,3.4vw,2rem); line-height:1.5; color:var(--ink); transition:opacity .18s ease; }
+  .mantra-text{ font-family:var(--font-display); font-size:clamp(1.25rem,2.4vw,1.55rem); font-style:italic; line-height:1.55; color:var(--accent); max-width:60ch; transition:opacity .18s ease; }
+  .mantra-text .word{ border-radius:4px; padding:0 1px; margin:0 -1px; transition:background-color .12s ease; }
+  .mantra-text .word.is-current{ background:color-mix(in srgb, var(--accent) 38%, transparent); }
+  .mantra-text.text-pulse{ animation:textPulse .5s ease; }
+  @keyframes textPulse{ 0%{ opacity:.45; } 100%{ opacity:1; } }
+  .mantra-meaning{ font-size:.92rem; color:var(--ink-soft); line-height:1.55; max-width:58ch; }
+  @media (prefers-reduced-motion: reduce){ .mantra-text .word, .mantra-text.text-pulse{ transition:none; animation:none; } }
+
+  .beads-wrap{ display:flex; flex-direction:column; align-items:center; gap:8px; padding-top:6px; }
+  #beadSvg{ width:100%; max-width:280px; display:block; }
+  .beads-count{ font-family:var(--font-mono); font-size:.75rem; color:var(--ink-faint); letter-spacing:.04em; }
+  circle.bead{ transition:fill .25s ease, opacity .25s ease, stroke .25s ease; }
+  circle.bead-upcoming{ fill:var(--surface-2); stroke:var(--line); stroke-width:1.2; }
+  circle.bead-done{ fill:var(--accent); opacity:.5; stroke:none; }
+  circle.bead-current{ fill:var(--accent); stroke:none; animation:beadPulse 1.8s ease-in-out infinite; }
+  @keyframes beadPulse{ 0%,100%{ filter:drop-shadow(0 0 3px var(--accent)); } 50%{ filter:drop-shadow(0 0 8px var(--accent)); } }
+  @media (prefers-reduced-motion: reduce){ circle.bead-current{ animation:none; filter:drop-shadow(0 0 6px var(--accent)); } }
+  .guru-bead{ fill:var(--surface-2); stroke:var(--ink-faint); stroke-width:1.4; transition:fill .25s ease, stroke .25s ease; }
+  .guru-bead.is-current{ fill:var(--accent); stroke:none; animation:beadPulse 1.8s ease-in-out infinite; }
+  @media (prefers-reduced-motion: reduce){ .guru-bead.is-current{ animation:none; filter:drop-shadow(0 0 6px var(--accent)); } }
+  .tassel line{ stroke:var(--ink-faint); }
+
+  .transport{ display:flex; align-items:center; gap:14px; flex-wrap:wrap; border-top:1px solid var(--line); padding-top:22px; }
+  .icon-btn{ width:44px; height:44px; border-radius:50%; border:1px solid var(--line); background:var(--surface); color:var(--ink); display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:1.3rem; }
+  .icon-btn:hover{ border-color:var(--ink-faint); }
+  .icon-btn:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .icon-btn-play{ width:58px; height:58px; background:var(--accent); border-color:var(--accent); color:var(--accent-ink); }
+  .icon-btn-play:hover{ background:var(--accent-strong); }
+  .icon-btn-play svg{ width:20px; height:20px; }
+  .btn-stop{ margin-left:auto; }
+
+  .voice-row{ display:flex; gap:8px; align-items:center; margin-top:14px; }
+  .voice-row select{ flex:1; min-width:0; background:var(--ground) var(--select-arrow) no-repeat right 11px center/13px; color:var(--ink); border:1px solid var(--line); border-radius:8px; padding:8px 32px 8px 9px; font-size:.85rem; appearance:none; -webkit-appearance:none; -moz-appearance:none; }
+  .btn-refresh{ width:34px; height:34px; font-size:1rem; flex:none; transition:transform .4s ease; }
+  .btn-refresh.is-spinning{ transform:rotate(360deg); }
+  .btn-preview{ padding:8px 14px; font-size:.82rem; flex:none; }
+  .pace-row{ display:flex; align-items:center; gap:10px; margin-top:14px; font-size:.85rem; color:var(--ink-soft); }
+  .pace-row input{ flex:1; }
+  .voice-status{ margin-top:12px; font-family:var(--font-mono); font-size:.72rem; color:var(--ink-faint); min-height:1em; }
+  .mode-hint{ font-size:.76rem; color:var(--ink-faint); line-height:1.5; margin-top:2px; }
+
+  .done-card{ text-align:left; }
+  .done-card h2{ margin-top:8px; font-size:1.7rem; }
+  .done-card p#doneSummary{ color:var(--ink-soft); margin-top:12px; line-height:1.6; max-width:50ch; }
+  .done-card .btn{ margin-top:24px; }
+
+  .sidebar{ display:flex; flex-direction:column; gap:22px; }
+  .panel{ background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:26px 26px 24px; }
+  .panel h3{ font-size:1.05rem; }
+  .panel .hint{ color:var(--ink-soft); font-size:.85rem; margin-top:8px; line-height:1.5; }
+
+  .about-detail{ margin-top:16px; display:flex; flex-direction:column; gap:12px; }
+  .about-detail dt{ font-family:var(--font-mono); font-size:.68rem; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-faint); }
+  .about-detail dd{ margin:3px 0 0; font-size:.92rem; line-height:1.5; }
+  .about-detail dd .dot{ width:7px; height:7px; border-radius:50%; display:inline-block; margin-right:7px; }
+
+  .log-list{ list-style:none; margin:16px 0 0; padding:0; max-height:340px; overflow-y:auto; display:flex; flex-direction:column; }
+  .log-item{ display:flex; gap:11px; padding:12px 0; border-bottom:1px solid var(--line); }
+  .log-item:last-child{ border-bottom:none; }
+  .log-dot{ width:9px; height:9px; border-radius:50%; margin-top:6px; flex:none; }
+  .log-body{ display:flex; flex-direction:column; gap:3px; min-width:0; }
+  .log-date{ font-family:var(--font-mono); font-size:.72rem; color:var(--ink-faint); }
+  .log-intent{ font-size:.88rem; color:var(--ink); overflow-wrap:break-word; }
+  .log-status{ align-self:flex-start; margin-top:2px; font-family:var(--font-mono); font-size:.68rem; letter-spacing:.03em; color:var(--ink-soft); }
+  .log-status-completed{ color:var(--accent); }
+  .empty-note{ color:var(--ink-faint); font-size:.85rem; margin-top:14px; }
+
+  [hidden]{ display:none !important; }
+</style>
+
+<div class="page">
+  <header class="masthead">
+    <div>
+      <p class="eyebrow">A paced companion for mantra practice</p>
+      <h1 class="title"><span aria-hidden="true">📿</span> Mantra Wheel</h1>
+    </div>
+    <p class="masthead-note">Hindu and Buddhist japa, one mala at a time — spoken aloud or counted in silence, your choice.</p>
+  </header>
+
+  <main id="stage">
+    <section class="card setup-card" id="setupCard">
+      <h2>Choose a mantra</h2>
+      <p class="hint">Pick a tradition and a mantra, set how many times around the mala, and how you'd like it paced.</p>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="traditionSelect">Tradition</label>
+          <select id="traditionSelect"></select>
+        </div>
+        <div class="field">
+          <label for="mantraSelect">Mantra</label>
+          <select id="mantraSelect"></select>
+        </div>
+      </div>
+
+      <div class="mantra-preview" id="setupPreview"></div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="roundsSelect">Rounds</label>
+          <select id="roundsSelect">
+            <option value="1">1 round (108)</option>
+            <option value="3" selected>3 rounds (324)</option>
+            <option value="9">9 rounds (972)</option>
+            <option value="custom">Custom…</option>
+          </select>
+        </div>
+        <div class="field" id="customRoundsField" hidden>
+          <label for="customRoundsInput">Custom rounds</label>
+          <input type="number" id="customRoundsInput" min="1" max="54" value="1">
+        </div>
+        <div class="field">
+          <label for="modeSelect">Pacing</label>
+          <select id="modeSelect">
+            <option value="guided">Guided — voice speaks each repetition</option>
+            <option value="silent">Silent count — bell per bead, you chant</option>
+          </select>
+        </div>
+      </div>
+      <p class="hint mode-hint" id="modeHint"></p>
+
+      <div class="intent-field">
+        <label for="intentInput" style="font-family:var(--font-mono);font-size:.68rem;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-faint);">Intention (sankalpa)</label>
+        <input id="intentInput" type="text" placeholder="e.g. for patience, for a family member's health" maxlength="140" />
+        <p class="hint">Optional — a resolve or dedication held for this round of practice, spoken once at the start.</p>
+      </div>
+
+      <div class="resume-row" id="resumeRow" hidden>
+        <p id="resumeText"></p>
+        <div class="resume-actions">
+          <button class="btn btn-ghost" id="discardResumeBtn">Start fresh instead</button>
+          <button class="btn btn-primary" id="resumeBtn">Continue where you left off</button>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-begin" id="beginBtn">Begin the mala</button>
+    </section>
+
+    <section class="card practice-card" id="practiceCard" hidden>
+      <div class="practice-meta">
+        <span class="practice-trad" id="practiceTrad"><span class="dot"></span><span id="practiceTradLabel"></span></span>
+        <span id="practiceProgress"></span>
+      </div>
+      <h2 class="mantra-label" id="mantraLabel"></h2>
+      <p class="mantra-script" id="mantraScript"></p>
+      <p class="mantra-text" id="mantraText"></p>
+      <p class="mantra-meaning" id="mantraMeaning"></p>
+
+      <div class="beads-wrap">
+        <svg id="beadSvg" viewBox="0 0 300 300" aria-hidden="true"></svg>
+        <p class="beads-count" id="beadsCount"></p>
+      </div>
+
+      <div class="transport">
+        <button class="icon-btn" id="prevBtn" aria-label="Previous bead">‹</button>
+        <button class="icon-btn icon-btn-play" id="playBtn" aria-label="Play"></button>
+        <button class="icon-btn" id="nextBtn" aria-label="Next bead">›</button>
+        <button class="btn btn-ghost btn-stop" id="stopBtn">Set aside</button>
+      </div>
+    </section>
+
+    <section class="card done-card" id="doneCard" hidden>
+      <p class="eyebrow">The mala is complete.</p>
+      <h2>Well chanted.</h2>
+      <p id="doneSummary"></p>
+      <button class="btn btn-primary" id="newSessionBtn">Begin again</button>
+    </section>
+  </main>
+
+  <aside class="sidebar">
+    <section class="panel">
+      <h3>Voice</h3>
+      <div class="voice-row">
+        <select id="voiceSelect" aria-label="Voice"></select>
+        <button class="icon-btn btn-refresh" id="refreshVoicesBtn" type="button" aria-label="Refresh voice list" title="Refresh voice list">⟳</button>
+        <button class="btn btn-ghost btn-preview" id="previewVoiceBtn" type="button">Hear a sample</button>
+      </div>
+      <label class="pace-row">Pace <input type="range" id="rateRange" min="0.7" max="1.3" step="0.05" value="1"></label>
+      <p class="voice-status" id="voiceStatus" aria-live="polite"></p>
+      <p class="hint" id="voiceHint" hidden>Voices under “Recommended” sound the most natural. On a Mac, confirmed: browsers generally don't expose Enhanced/Premium system voices to web pages at all — even ones fully installed and working. Chrome's free network “Google” voices are the most reliable upgrade available to this page.</p>
+      <p class="hint">Sanskrit, Tibetan, and Japanese pronunciation is beyond what a generic system voice can do reliably — the voice speaks the romanized transliteration, which is an approximation, not a pronunciation guide.</p>
+    </section>
+
+    <section class="panel">
+      <h3>About this mantra</h3>
+      <dl class="about-detail" id="aboutDetail">
+        <div><dt>Tradition</dt><dd><span class="dot" id="aboutDot"></span><span id="aboutLineage"></span></dd></div>
+        <div><dt>Source</dt><dd id="aboutSource"></dd></div>
+      </dl>
+    </section>
+
+    <section class="panel">
+      <h3>Log</h3>
+      <p class="hint">A record of what was actually chanted, intentions included.</p>
+      <ul class="log-list" id="logList"></ul>
+      <p class="empty-note" id="logEmpty">Nothing logged yet — it will fill in as you practice.</p>
+    </section>
+  </aside>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  // ---------- Mantra content ----------
+  // Transliterations and meanings are written to be accurate and
+  // respectful summaries, not authoritative doctrinal statements — several
+  // of these mantras (Om Mani Padme Hum especially) resist a single fixed
+  // translation, and teachers within these traditions differ on emphasis.
+  // Native-script text (Devanagari, Tibetan, Japanese) is provided as an
+  // aid alongside the transliteration, sourced from commonly published
+  // renderings; if precise script accuracy matters to you, have it checked
+  // by a reader of that script — stacked Tibetan/Devanagari conjuncts are
+  // easy to get subtly wrong even with care.
+  var HINDU_MANTRAS = [
+    { id:"om", label:"Om", script:"ॐ", scriptFont:"deva",
+      translit:"Om",
+      meaning:"The pranava — the primordial sound said to underlie all creation. Often chanted alone as a complete mantra in itself, and as the seed sound that opens many others.",
+      lineage:"Universal · Vedic",
+      source:"Referenced throughout the Vedas and Upanishads, notably the Mandukya Upanishad's meditation on Om as the whole of reality." },
+    { id:"om-namah-shivaya", label:"Om Namah Shivaya", script:"ॐ नमः शिवाय", scriptFont:"deva",
+      translit:"Om Namah Shivaya",
+      meaning:"“Om, I bow to Shiva.” Known as the Panchakshari, the five-syllable mantra (Na, Mah, Shi, Va, Ya) — among the most widely chanted mantras in Hinduism, an offering of surrender to Shiva as the inner Self.",
+      lineage:"Shaivite · Hindu",
+      source:"Rooted in the Shri Rudram hymn of the Yajur Veda; central to Shaiva devotional and meditative practice." },
+    { id:"om-namo-narayanaya", label:"Om Namo Narayanaya", script:"ॐ नमो नारायणाय", scriptFont:"deva",
+      translit:"Om Namo Narayanaya",
+      meaning:"“Om, I bow to Narayana.” The eight-syllable Ashtakshara mantra of Vaishnava devotion, an offering of surrender to Vishnu as the sustainer of the universe.",
+      lineage:"Vaishnavite · Hindu",
+      source:"Central to Vaishnava devotional tradition, found across Vishnu-focused scripture and temple worship." },
+    { id:"gayatri", label:"Gayatri Mantra", script:"ॐ भूर्भुवः स्वः तत्सवितुर्वरेण्यं भर्गो देवस्य धीमहि धियो यो नः प्रचोदयात्", scriptFont:"deva",
+      translit:"Om Bhur Bhuvah Svah, Tat Savitur Varenyam, Bhargo Devasya Dhimahi, Dhiyo Yo Nah Prachodayat",
+      meaning:"A prayer to Savitr, the sun as source of light and life, asking that our intellect be illumined and turned toward what is good. Traditionally recited at dawn, noon, and dusk.",
+      lineage:"Vedic · Hindu",
+      source:"From the Rigveda (3.62.10), one of the oldest and most revered mantras in the Hindu tradition." },
+    { id:"hare-krishna", label:"Hare Krishna Maha-Mantra", script:"हरे कृष्ण हरे कृष्ण कृष्ण कृष्ण हरे हरे । हरे राम हरे राम राम राम हरे हरे", scriptFont:"deva",
+      translit:"Hare Krishna Hare Krishna, Krishna Krishna Hare Hare, Hare Rama Hare Rama, Rama Rama Hare Hare",
+      meaning:"A call to Krishna and Rama through Hare, the divine feminine energy that unites the devotee with God. Popularized by Chaitanya Mahaprabhu in 16th-century Bengal as a practice open to anyone, regardless of caste or learning.",
+      lineage:"Gaudiya Vaishnava · Hindu",
+      source:"Found in the Kali-Santarana Upanishad; the central practice of the Gaudiya Vaishnava (and later ISKCON) tradition." }
+  ];
+
+  var BUDDHIST_MANTRAS = [
+    { id:"om-mani-padme-hum", label:"Om Mani Padme Hum", script:"ཨོཾ་མ་ཎི་པདྨེ་ཧཱུྃ", scriptFont:"tibetan",
+      translit:"Om Mani Padme Hum",
+      meaning:"The mantra of Avalokiteshvara (Chenrezig), the Bodhisattva of Compassion. Its six syllables are traditionally linked to purifying the six realms of existence; often glossed as “the jewel in the lotus,” though Tibetan teachers caution against reducing it to one fixed translation.",
+      lineage:"Vajrayana · Tibetan Buddhist",
+      source:"Central to Tibetan Buddhist practice across all four major schools; among the most widely recognized mantras in the world." },
+    { id:"om-ah-hum", label:"Om Ah Hum", script:"ཨོཾ་ཨཿཧཱུྃ", scriptFont:"tibetan",
+      translit:"Om Ah Hum",
+      meaning:"Three seed syllables representing enlightened body, speech, and mind. Often chanted at the start of a practice session, or combined with another mantra to bless and empower it.",
+      lineage:"Vajrayana · Tibetan Buddhist",
+      source:"A foundational element of Vajrayana ritual and visualization practice across Tibetan lineages." },
+    { id:"nembutsu", label:"Namu Amida Butsu", script:"南無阿弥陀仏", scriptFont:"jp",
+      translit:"Namu Amida Butsu",
+      meaning:"“Homage to Amida Buddha.” The Nembutsu, spoken in entrustment to Amida's vow to bring all beings to the Pure Land — not a request repeated to earn merit, but an expression of gratitude already received.",
+      lineage:"Jōdo Shinshū / Jōdo-shū · Japanese Pure Land Buddhist",
+      source:"The central practice of Japanese Pure Land Buddhism, taught by Hōnen and, in the Jōdo Shinshū school, Shinran." },
+    { id:"nam-myoho-renge-kyo", label:"Nam-Myoho-Renge-Kyo", script:"南無妙法蓮華経", scriptFont:"jp",
+      translit:"Nam-Myoho-Renge-Kyo",
+      meaning:"“Devotion to the Mystic Law of the Lotus Sutra.” Taught by the 13th-century Japanese monk Nichiren as the essence of the Lotus Sutra, chanted as a direct path to awakening the Buddha nature already present in the practitioner.",
+      lineage:"Nichiren Buddhist",
+      source:"The central practice (daimoku) of Nichiren Buddhism, established by Nichiren in 1253." }
+  ];
+
+  // Reserved for a future open/secular set (user-entered mantra or
+  // affirmation) — kept out of the tradition list below until that UI
+  // exists, but the data shape (a "tradition" bucket of mantra objects)
+  // already accommodates it without rework.
+  var TRADITIONS = {
+    hindu: { key:"hindu", name:"Hindu", mantras: HINDU_MANTRAS },
+    buddhist: { key:"buddhist", name:"Buddhist", mantras: BUDDHIST_MANTRAS }
+  };
+  var TRADITION_ORDER = ["hindu","buddhist"];
+
+  function findMantra(traditionKey, mantraId){
+    var t = TRADITIONS[traditionKey];
+    if(!t) return null;
+    return t.mantras.find(function(m){ return m.id===mantraId; }) || t.mantras[0];
+  }
+
+  var SCRIPT_FONT_VAR = { deva:"var(--font-deva)", tibetan:"var(--font-tibetan)", jp:"var(--font-jp)" };
+
+  var BEADS_PER_ROUND = 108;
+
+  // ---------- Bead geometry (108 beads around a loop + 1 guru bead) ----------
+  function buildBeadPositions(){
+    var positions = [];
+    var cx=150, cy=140, rx=115, ry=100, gapDeg=14;
+    var startDeg = 90+gapDeg/2, sweepDeg = 360-gapDeg;
+    for(var k=0;k<BEADS_PER_ROUND;k++){
+      var deg = startDeg + (k/(BEADS_PER_ROUND-1))*sweepDeg;
+      var rad = deg*Math.PI/180;
+      // Traditional counting markers sit at the quarter points (27/54/81).
+      var isMarker = (k % 27) === 0;
+      positions.push({ x: cx+rx*Math.cos(rad), y: cy+ry*Math.sin(rad), r: isMarker?6.2:4.3 });
+    }
+    return positions;
+  }
+  var beadPositions = buildBeadPositions();
+  var guruBead = { x:150, y:140+100, r:8.5 };
+
+  function renderBeadTrack(){
+    var svg = document.getElementById("beadSvg");
+    svg.innerHTML = "";
+    var ns = "http://www.w3.org/2000/svg";
+
+    var pts = beadPositions.map(function(p){ return p.x.toFixed(1)+","+p.y.toFixed(1); }).join(" ");
+    var poly = document.createElementNS(ns,"polyline");
+    poly.setAttribute("points", pts + " " + guruBead.x + "," + guruBead.y + " " + beadPositions[0].x.toFixed(1) + "," + beadPositions[0].y.toFixed(1));
+    poly.setAttribute("fill","none");
+    poly.setAttribute("stroke","var(--line)");
+    poly.setAttribute("stroke-width","1.5");
+    svg.appendChild(poly);
+
+    beadPositions.forEach(function(p, idx){
+      var c = document.createElementNS(ns,"circle");
+      c.setAttribute("cx", p.x); c.setAttribute("cy", p.y); c.setAttribute("r", p.r);
+      c.setAttribute("class","bead bead-upcoming");
+      c.setAttribute("data-idx", idx);
+      svg.appendChild(c);
+    });
+
+    var guru = document.createElementNS(ns,"circle");
+    guru.setAttribute("id","guruBeadCircle");
+    guru.setAttribute("cx", guruBead.x); guru.setAttribute("cy", guruBead.y); guru.setAttribute("r", guruBead.r);
+    guru.setAttribute("class","guru-bead");
+    svg.appendChild(guru);
+
+    // A simple three-line tassel hanging from the guru bead — the point
+    // traditionally marked with a tassel, where you begin and turn back
+    // rather than crossing over.
+    var tassel = document.createElementNS(ns,"g");
+    tassel.setAttribute("class","tassel");
+    [[-8,26],[0,30],[8,26]].forEach(function(end){
+      var line = document.createElementNS(ns,"line");
+      line.setAttribute("x1", guruBead.x); line.setAttribute("y1", guruBead.y+6);
+      line.setAttribute("x2", guruBead.x+end[0]); line.setAttribute("y2", guruBead.y+end[1]);
+      line.setAttribute("stroke-width","2"); line.setAttribute("stroke-linecap","round");
+      tassel.appendChild(line);
+    });
+    svg.appendChild(tassel);
+  }
+
+  function updateBeadHighlight(beadsSoFarInRound){
+    var currentIdx = beadsSoFarInRound - 1;
+    var circles = document.querySelectorAll("#beadSvg circle.bead");
+    circles.forEach(function(c){
+      var idx = parseInt(c.getAttribute("data-idx"),10);
+      c.setAttribute("class","bead " + (idx < currentIdx ? "bead-done" : idx === currentIdx ? "bead-current" : "bead-upcoming"));
+    });
+    var guru = document.getElementById("guruBeadCircle");
+    if(guru) guru.classList.toggle("is-current", beadsSoFarInRound === 0);
+  }
+
+  // ---------- Chime (Web Audio — no external asset needed) ----------
+  var audioCtx = null;
+  function playChime(){
+    try{
+      if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+      if(audioCtx.state === "suspended") audioCtx.resume();
+      var ctx = audioCtx, now = ctx.currentTime;
+      [1, 2.4].forEach(function(mult, i){
+        var osc = ctx.createOscillator(), gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.value = 480 * mult;
+        gain.gain.setValueAtTime(0, now);
+        gain.gain.linearRampToValueAtTime(i===0?0.16:0.06, now+0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now+1.3);
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.start(now); osc.stop(now+1.35);
+      });
+    }catch(e){}
+  }
+
+  // ---------- Store (localStorage) ----------
+  // Same tradeoff as any browser-local log: no account, no login, but it
+  // doesn't follow you across browsers or devices.
+  var Store = (function(){
+    function lsGet(key, fallback){ try{ var v = JSON.parse(localStorage.getItem(key)); return v==null?fallback:v; }catch(e){ return fallback; } }
+    function lsSet(key, val){ try{ localStorage.setItem(key, JSON.stringify(val)); }catch(e){} }
+
+    function addEntry(data){
+      var id = "e"+Date.now()+Math.random().toString(36).slice(2,7);
+      var all = lsGet("mantra_entries", {});
+      all[id] = Object.assign({}, data, { id:id });
+      lsSet("mantra_entries", all);
+      window.dispatchEvent(new Event("mantra-entries-changed"));
+      return Promise.resolve(id);
+    }
+    function updateEntry(id, patch){
+      if(!id) return Promise.resolve();
+      var all = lsGet("mantra_entries", {});
+      if(all[id]){ all[id] = Object.assign({}, all[id], patch); lsSet("mantra_entries", all); window.dispatchEvent(new Event("mantra-entries-changed")); }
+      return Promise.resolve();
+    }
+    function subscribeEntries(cb){
+      var render = function(){
+        var all = lsGet("mantra_entries", {});
+        var arr = Object.keys(all).map(function(k){ return all[k]; });
+        arr.sort(function(a,b){ return (b.startedAt||"").localeCompare(a.startedAt||""); });
+        cb(arr);
+      };
+      render();
+      window.addEventListener("mantra-entries-changed", render);
+      return function(){ window.removeEventListener("mantra-entries-changed", render); };
+    }
+    return { addEntry:addEntry, updateEntry:updateEntry, subscribeEntries:subscribeEntries };
+  })();
+
+  // ---------- Speech ----------
+  var synthAvailable = "speechSynthesis" in window;
+
+  function voiceScore(v){
+    var n = (v.name || "").toLowerCase();
+    var score = 0;
+    if(/premium|enhanced|neural|natural|studio|siri/.test(n)) score += 100;
+    if(/^google\b/.test(n)) score += 90;
+    if(v.lang && v.lang.toLowerCase().indexOf("en") === 0) score += 10;
+    if(v.default) score += 1;
+    return score;
+  }
+
+  var cachedVoices = [];
+  function populateVoices(){
+    if(!synthAvailable) return;
+    var raw = speechSynthesis.getVoices();
+    if(!raw.length) return;
+    var voices = raw.slice().sort(function(a,b){
+      return voiceScore(b) - voiceScore(a) || a.name.localeCompare(b.name);
+    });
+    cachedVoices = voices;
+    var sel = document.getElementById("voiceSelect");
+    var previous = sel.value;
+    sel.innerHTML = "";
+    var recommended = voices.filter(function(v){ return voiceScore(v) >= 100; });
+    var other = voices.filter(function(v){ return voiceScore(v) < 100; });
+    function addGroup(label, list){
+      if(!list.length) return;
+      var g = document.createElement("optgroup"); g.label = label;
+      list.forEach(function(v){
+        var o = document.createElement("option");
+        o.value = v.voiceURI; o.textContent = v.name + " (" + v.lang + ")";
+        g.appendChild(o);
+      });
+      sel.appendChild(g);
+    }
+    addGroup("Recommended", recommended);
+    addGroup("Other voices", other);
+    document.getElementById("voiceHint").hidden = recommended.length > 0;
+
+    var saved = null; try{ saved = localStorage.getItem("mantra_voice"); }catch(e){}
+    if(saved && voices.some(function(v){ return v.voiceURI===saved; })) sel.value = saved;
+    else if(previous && voices.some(function(v){ return v.voiceURI===previous; })) sel.value = previous;
+    else if(voices.length) sel.value = voices[0].voiceURI;
+  }
+  if(synthAvailable){
+    populateVoices();
+    speechSynthesis.onvoiceschanged = populateVoices;
+    [300, 800, 1500, 3000].forEach(function(ms){ setTimeout(populateVoices, ms); });
+  } else {
+    var vsel0 = document.getElementById("voiceSelect");
+    vsel0.innerHTML = "<option>Text pacing only — no voices found</option>";
+    vsel0.disabled = true;
+  }
+
+  function estimateReadMs(text){ return Math.max(1600, text.split(/\s+/).length * 370); }
+
+  function renderPrayerWords(container, text){
+    container.innerHTML = "";
+    var re = /\S+|\s+/g, match;
+    while((match = re.exec(text))){
+      var token = match[0];
+      if(/\S/.test(token)){
+        var span = document.createElement("span");
+        span.className = "word";
+        span.textContent = token;
+        span.dataset.start = match.index;
+        span.dataset.end = match.index + token.length;
+        container.appendChild(span);
+      } else {
+        container.appendChild(document.createTextNode(token));
+      }
+    }
+  }
+  function highlightWordAt(container, offset, charIndex){
+    var localIndex = charIndex - offset;
+    Array.prototype.forEach.call(container.querySelectorAll(".word"), function(span){
+      var start = parseInt(span.dataset.start, 10);
+      var isMatch = localIndex >= start && localIndex < parseInt(span.dataset.end, 10);
+      span.classList.toggle("is-current", isMatch);
+    });
+  }
+  function clearWordHighlight(container){
+    Array.prototype.forEach.call(container.querySelectorAll(".word.is-current"), function(span){
+      span.classList.remove("is-current");
+    });
+  }
+  function wordStarts(text){
+    var out = [], re = /\S+/g, m;
+    while((m = re.exec(text))) out.push({ start:m.index });
+    return out;
+  }
+  function scheduleFallbackHighlight(container, offset, text, rate, startedAt){
+    var words = wordStarts(text);
+    if(!words.length) return function(){};
+    var totalChars = text.length;
+    var estMs = estimateReadMs(text) / (rate || 1);
+    var elapsed = Date.now() - startedAt;
+    var timers = words.map(function(w){
+      var target = estMs * (w.start / totalChars);
+      return setTimeout(function(){ highlightWordAt(container, offset, w.start); }, Math.max(0, target - elapsed));
+    });
+    return function(){ timers.forEach(clearTimeout); };
+  }
+
+  function speak(text, onend, highlightTarget){
+    if(!synthAvailable){ setTimeout(onend, estimateReadMs(text)); return; }
+    try{
+      var fire = function(){
+        var u = new SpeechSynthesisUtterance(text);
+        var sel = document.getElementById("voiceSelect");
+        var voices = cachedVoices.length ? cachedVoices : speechSynthesis.getVoices();
+        var chosen = voices.find(function(v){ return v.voiceURI===sel.value; });
+        if(chosen) u.voice = chosen;
+        u.rate = parseFloat(document.getElementById("rateRange").value) || 1;
+        var statusEl = document.getElementById("voiceStatus");
+        if(statusEl) statusEl.textContent = chosen ? ("Requested: " + chosen.name) : "Requested: browser default";
+        var done = false, boundaryFired = false, cancelFallback = null;
+        u.onstart = function(){
+          if(statusEl) statusEl.textContent = chosen ? ("Speaking as: " + chosen.name) : "Speaking as: browser default";
+          if(highlightTarget){
+            var startedAt = Date.now();
+            setTimeout(function(){
+              if(!boundaryFired && !done){
+                cancelFallback = scheduleFallbackHighlight(highlightTarget.container, highlightTarget.offset||0, text, u.rate, startedAt);
+              }
+            }, 150);
+          }
+        };
+        u.onboundary = function(e){
+          if(!highlightTarget) return;
+          if(e.name && e.name !== "word") return;
+          boundaryFired = true;
+          if(cancelFallback){ cancelFallback(); cancelFallback = null; }
+          highlightWordAt(highlightTarget.container, highlightTarget.offset||0, e.charIndex);
+        };
+        u.onend = function(){ if(done) return; done = true; if(cancelFallback) cancelFallback(); if(highlightTarget) clearWordHighlight(highlightTarget.container); onend(); };
+        u.onerror = function(e){
+          if(statusEl) statusEl.textContent = "Voice engine error: " + (e && e.error ? e.error : "unknown") + " — falling back to text pacing.";
+          if(done) return; done = true; if(cancelFallback) cancelFallback(); if(highlightTarget) clearWordHighlight(highlightTarget.container); onend();
+        };
+        speechSynthesis.speak(u);
+      };
+      if(speechSynthesis.speaking || speechSynthesis.pending){
+        speechSynthesis.cancel();
+        setTimeout(fire, 30);
+      } else {
+        fire();
+      }
+    }catch(e){ setTimeout(onend, estimateReadMs(text)); }
+  }
+
+  // ---------- UI wiring ----------
+  var els = {};
+  ["traditionSelect","mantraSelect","setupPreview","roundsSelect","customRoundsField","customRoundsInput",
+   "modeSelect","modeHint","intentInput","resumeRow","resumeText","resumeBtn","discardResumeBtn","beginBtn",
+   "practiceCard","practiceTrad","practiceTradLabel","practiceProgress","mantraLabel","mantraScript","mantraText","mantraMeaning",
+   "beadsCount","playBtn","prevBtn","nextBtn","rateRange","voiceSelect","voiceHint","voiceStatus","previewVoiceBtn","refreshVoicesBtn","stopBtn",
+   "doneCard","doneSummary","newSessionBtn","logList","logEmpty",
+   "aboutDot","aboutLineage","aboutSource","setupCard"
+  ].forEach(function(id){ els[id] = document.getElementById(id); });
+
+  var PLAY_ICON = '<svg viewBox="0 0 20 20" fill="currentColor"><path d="M6 4l11 6-11 6V4z"/></svg>';
+  var PAUSE_ICON = '<svg viewBox="0 0 20 20" fill="currentColor"><rect x="5" y="4" width="4" height="12"/><rect x="11" y="4" width="4" height="12"/></svg>';
+  els.playBtn.innerHTML = PLAY_ICON;
+
+  document.title = "Mantra Wheel";
+
+  var MODE_HINTS = {
+    guided: "The voice speaks the mantra's transliteration on every bead, word-highlighted, and advances on its own.",
+    silent: "The voice introduces the mantra and its meaning once, then a soft chime marks each bead while you chant it yourself."
+  };
+
+  function populateTraditionOptions(){
+    els.traditionSelect.innerHTML = "";
+    TRADITION_ORDER.forEach(function(key){
+      var o = document.createElement("option");
+      o.value = key; o.textContent = TRADITIONS[key].name;
+      els.traditionSelect.appendChild(o);
+    });
+  }
+  function populateMantraOptions(){
+    var t = TRADITIONS[els.traditionSelect.value];
+    els.mantraSelect.innerHTML = "";
+    t.mantras.forEach(function(m){
+      var o = document.createElement("option");
+      o.value = m.id; o.textContent = m.label;
+      els.mantraSelect.appendChild(o);
+    });
+  }
+  function currentSetupMantra(){
+    return findMantra(els.traditionSelect.value, els.mantraSelect.value);
+  }
+  function renderMantraPreview(target, mantra, traditionKey){
+    var tradC = "var(--trad-"+traditionKey+")";
+    target.innerHTML =
+      '<span class="trad-tag" style="--trad-c:'+tradC+'"><span class="dot"></span>'+TRADITIONS[traditionKey].name+'</span>' +
+      '<p class="script" style="font-family:'+SCRIPT_FONT_VAR[mantra.scriptFont]+'">'+mantra.script+'</p>' +
+      '<p class="translit">'+mantra.translit+'</p>' +
+      '<p class="meaning">'+mantra.meaning+'</p>' +
+      '<p class="source">'+mantra.source+'</p>';
+  }
+  function refreshSetupPreview(){
+    var mantra = currentSetupMantra();
+    renderMantraPreview(els.setupPreview, mantra, els.traditionSelect.value);
+  }
+  function refreshModeHint(){
+    els.modeHint.textContent = MODE_HINTS[els.modeSelect.value] || "";
+  }
+
+  els.traditionSelect.addEventListener("change", function(){ populateMantraOptions(); refreshSetupPreview(); });
+  els.mantraSelect.addEventListener("change", refreshSetupPreview);
+  els.modeSelect.addEventListener("change", refreshModeHint);
+  els.roundsSelect.addEventListener("change", function(){
+    els.customRoundsField.hidden = els.roundsSelect.value !== "custom";
+  });
+
+  populateTraditionOptions();
+  populateMantraOptions();
+  refreshSetupPreview();
+  refreshModeHint();
+
+  function getRoundsFromSetup(){
+    if(els.roundsSelect.value === "custom"){
+      var n = parseInt(els.customRoundsInput.value, 10);
+      return (n>0) ? n : 1;
+    }
+    return parseInt(els.roundsSelect.value, 10);
+  }
+
+  // ---------- Session state machine ----------
+  var state = { steps:[], mantra:null, traditionKey:null, rounds:1, mode:"guided", currentIndex:0, playing:false, entryId:null, intention:"", startedAt:null };
+
+  function showOnly(which){
+    els.setupCard.hidden = which!=="setup";
+    els.practiceCard.hidden = which!=="practice";
+    els.doneCard.hidden = which!=="done";
+  }
+
+  function buildMantraSteps(mantra, rounds){
+    var steps = [{ kind:"intro" }];
+    for(var r=0;r<rounds;r++){
+      for(var i=0;i<BEADS_PER_ROUND;i++){
+        steps.push({ kind:"bead", roundIndex:r, beadIndexInRound:i });
+      }
+    }
+    return steps;
+  }
+
+  function introSpokenText(){
+    var base = state.mantra.label + ". " + state.mantra.meaning;
+    return state.intention ? (base + " Offered for " + state.intention + ".") : base;
+  }
+
+  function renderPracticeChrome(){
+    var tradC = "var(--trad-"+state.traditionKey+")";
+    els.practiceTrad.style.setProperty("--trad-c", tradC);
+    els.practiceTradLabel.textContent = TRADITIONS[state.traditionKey].name;
+    els.mantraLabel.textContent = state.mantra.label;
+    els.mantraScript.textContent = state.mantra.script;
+    els.mantraScript.style.fontFamily = SCRIPT_FONT_VAR[state.mantra.scriptFont];
+    els.mantraMeaning.textContent = state.mantra.meaning;
+  }
+
+  function renderStep(){
+    var step = state.steps[state.currentIndex];
+    if(step.kind === "intro"){
+      els.practiceProgress.textContent = "Introduction";
+      els.beadsCount.textContent = "Before the first bead";
+      renderPrayerWords(els.mantraText, state.mantra.translit);
+      updateBeadHighlight(0);
+    } else {
+      var beadsSoFar = step.beadIndexInRound + 1;
+      els.practiceProgress.textContent = "Round " + (step.roundIndex+1) + " of " + state.rounds;
+      els.beadsCount.textContent = "Bead " + beadsSoFar + " of " + BEADS_PER_ROUND;
+      renderPrayerWords(els.mantraText, state.mantra.translit);
+      updateBeadHighlight(beadsSoFar);
+    }
+    els.playBtn.innerHTML = state.playing ? PAUSE_ICON : PLAY_ICON;
+    els.playBtn.setAttribute("aria-label", state.playing ? "Pause" : "Play");
+  }
+
+  function persistSession(){
+    try{
+      localStorage.setItem("mantra_session", JSON.stringify({
+        entryId: state.entryId, traditionKey: state.traditionKey, mantraId: state.mantra.id,
+        rounds: state.rounds, mode: state.mode, currentIndex: state.currentIndex,
+        intention: state.intention, startedAt: state.startedAt
+      }));
+    }catch(e){}
+  }
+  function totalBeads(){ return state.rounds * BEADS_PER_ROUND; }
+  function beadsCompletedSoFar(){
+    var step = state.steps[state.currentIndex];
+    if(step.kind==="intro") return 0;
+    return step.roundIndex * BEADS_PER_ROUND + step.beadIndexInRound + 1;
+  }
+  function persistProgress(status){
+    Store.updateEntry(state.entryId, { beadsCompleted: beadsCompletedSoFar(), status: status, updatedAt: new Date().toISOString() });
+    persistSession();
+  }
+
+  function goTo(i, autoAdvance){
+    if(i<0 || i>=state.steps.length) return;
+    state.currentIndex = i;
+    renderStep();
+    persistProgress("in_progress");
+    if(autoAdvance && state.playing) speakCurrent();
+  }
+
+  function pulseText(){
+    els.mantraText.classList.remove("text-pulse");
+    void els.mantraText.offsetWidth;
+    els.mantraText.classList.add("text-pulse");
+  }
+
+  function speakCurrent(){
+    var step = state.steps[state.currentIndex];
+
+    if(step.kind === "intro"){
+      speak(introSpokenText(), function(){
+        if(!state.playing) return;
+        setTimeout(function(){ if(state.playing) goTo(state.currentIndex+1, true); }, 500);
+      });
+      return;
+    }
+
+    var isLastStep = state.currentIndex+1 >= state.steps.length;
+
+    if(state.mode === "guided"){
+      speak(state.mantra.translit, function(){
+        if(!state.playing) return;
+        if(isLastStep){ finishSession(); return; }
+        setTimeout(function(){ if(state.playing) goTo(state.currentIndex+1, true); }, 260);
+      }, { container: els.mantraText, offset: 0 });
+    } else {
+      playChime();
+      pulseText();
+      var rate = parseFloat(els.rateRange.value) || 1;
+      var intervalMs = 2400 / rate;
+      setTimeout(function(){
+        if(!state.playing) return;
+        if(isLastStep){ finishSession(); return; }
+        goTo(state.currentIndex+1, true);
+      }, intervalMs);
+    }
+  }
+
+  function pauseSession(){
+    state.playing = false;
+    if(synthAvailable) speechSynthesis.cancel();
+    els.playBtn.innerHTML = PLAY_ICON;
+    els.playBtn.setAttribute("aria-label","Play");
+    persistProgress("in_progress");
+  }
+
+  function finishSession(){
+    state.playing = false;
+    Store.updateEntry(state.entryId, { status:"completed", beadsCompleted: totalBeads(), completedAt: new Date().toISOString() });
+    try{ localStorage.removeItem("mantra_session"); }catch(e){}
+    var roundWord = state.rounds===1 ? "round" : "rounds";
+    els.doneSummary.textContent = (state.intention
+      ? "Offered for " + state.intention + ", chanting " + state.mantra.label
+      : "Chanted " + state.mantra.label) + " through " + state.rounds + " " + roundWord + " of the mala.";
+    showOnly("done");
+  }
+
+  function setAside(){
+    state.playing = false;
+    if(synthAvailable) speechSynthesis.cancel();
+    persistProgress("partial");
+    checkResume();
+    showOnly("setup");
+  }
+
+  function checkResume(){
+    var s = null;
+    try{ s = JSON.parse(localStorage.getItem("mantra_session")); }catch(e){}
+    if(s && s.entryId){
+      var mantra = findMantra(s.traditionKey, s.mantraId);
+      var stepsLen = buildMantraSteps(mantra, s.rounds).length;
+      els.resumeText.textContent = "You have " + mantra.label + " in progress" +
+        (s.intention ? (", offered for " + s.intention) : "") +
+        " — step " + Math.min(s.currentIndex+1, stepsLen) + " of " + stepsLen + ".";
+      els.resumeRow.hidden = false;
+    } else {
+      els.resumeRow.hidden = true;
+    }
+  }
+
+  function updateAboutPanel(){
+    var tradC = "var(--trad-"+state.traditionKey+")";
+    els.aboutDot.style.background = tradC;
+    els.aboutLineage.style.color = tradC;
+    els.aboutLineage.textContent = state.mantra.lineage;
+    els.aboutSource.textContent = state.mantra.source;
+  }
+
+  els.beginBtn.addEventListener("click", function(){
+    state.intention = els.intentInput.value.trim();
+    state.traditionKey = els.traditionSelect.value;
+    state.mantra = currentSetupMantra();
+    state.rounds = getRoundsFromSetup();
+    state.mode = els.modeSelect.value;
+    state.steps = buildMantraSteps(state.mantra, state.rounds);
+    state.startedAt = new Date().toISOString();
+    state.currentIndex = 0;
+    state.playing = true;
+    Store.addEntry({
+      startedAt: state.startedAt, tradition: state.traditionKey, traditionName: TRADITIONS[state.traditionKey].name,
+      mantraId: state.mantra.id, mantraLabel: state.mantra.label, intention: state.intention,
+      rounds: state.rounds, mode: state.mode, status:"in_progress", beadsCompleted:0, totalBeads: totalBeads()
+    }).then(function(id){
+      state.entryId = id;
+      renderBeadTrack();
+      renderPracticeChrome();
+      updateAboutPanel();
+      showOnly("practice");
+      renderStep();
+      persistSession();
+      speakCurrent();
+    });
+  });
+
+  els.resumeBtn.addEventListener("click", function(){
+    var s = null;
+    try{ s = JSON.parse(localStorage.getItem("mantra_session")); }catch(e){}
+    if(!s) return;
+    state.entryId = s.entryId;
+    state.traditionKey = s.traditionKey;
+    state.mantra = findMantra(s.traditionKey, s.mantraId);
+    state.rounds = s.rounds;
+    state.mode = s.mode;
+    state.intention = s.intention || "";
+    state.startedAt = s.startedAt;
+    state.steps = buildMantraSteps(state.mantra, state.rounds);
+    state.currentIndex = Math.min(s.currentIndex, state.steps.length-1);
+    state.playing = true;
+    renderBeadTrack();
+    renderPracticeChrome();
+    updateAboutPanel();
+    showOnly("practice");
+    renderStep();
+    speakCurrent();
+  });
+
+  els.discardResumeBtn.addEventListener("click", function(){
+    var s = null;
+    try{ s = JSON.parse(localStorage.getItem("mantra_session")); }catch(e){}
+    if(s && s.entryId) Store.updateEntry(s.entryId, { status:"partial", updatedAt: new Date().toISOString() });
+    try{ localStorage.removeItem("mantra_session"); }catch(e){}
+    els.resumeRow.hidden = true;
+  });
+
+  els.playBtn.addEventListener("click", function(){
+    if(!state.playing){
+      state.playing = true; els.playBtn.innerHTML = PAUSE_ICON; els.playBtn.setAttribute("aria-label","Pause"); speakCurrent();
+    } else {
+      pauseSession();
+    }
+  });
+  els.prevBtn.addEventListener("click", function(){ goTo(state.currentIndex-1, state.playing); });
+  els.nextBtn.addEventListener("click", function(){ goTo(state.currentIndex+1, state.playing); });
+  els.stopBtn.addEventListener("click", setAside);
+  els.newSessionBtn.addEventListener("click", function(){ els.intentInput.value=""; checkResume(); showOnly("setup"); });
+
+  els.voiceSelect.addEventListener("change", function(){ try{ localStorage.setItem("mantra_voice", els.voiceSelect.value); }catch(e){} });
+  els.refreshVoicesBtn.addEventListener("click", function(){
+    populateVoices();
+    els.refreshVoicesBtn.classList.remove("is-spinning");
+    void els.refreshVoicesBtn.offsetWidth;
+    els.refreshVoicesBtn.classList.add("is-spinning");
+  });
+  els.previewVoiceBtn.addEventListener("click", function(){
+    speak("Om Namah Shivaya.", function(){});
+  });
+
+  function statusLabel(e){
+    if(e.status==="completed") return "Completed";
+    var n = e.beadsCompleted||0, t = e.totalBeads||108;
+    return (e.status==="partial" ? "Set aside — " : "In progress — ") + n + " of " + t + " beads";
+  }
+
+  Store.subscribeEntries(function(list){
+    els.logList.innerHTML = "";
+    els.logEmpty.hidden = list.length>0;
+    list.forEach(function(e){
+      var li = document.createElement("li"); li.className="log-item";
+      var dot = document.createElement("span"); dot.className="log-dot";
+      dot.style.background = "var(--trad-"+(e.tradition||"hindu")+")";
+      var body = document.createElement("div"); body.className="log-body";
+      var dateLine = document.createElement("p"); dateLine.className="log-date";
+      dateLine.textContent = e.startedAt ? new Date(e.startedAt).toLocaleDateString(undefined,{month:"short",day:"numeric"}) + " · " + (e.mantraLabel||"") : "";
+      var intentLine = document.createElement("p"); intentLine.className="log-intent";
+      intentLine.textContent = e.intention ? ("“" + e.intention + "”") : "No intention set";
+      var statusEl = document.createElement("span"); statusEl.className = "log-status " + (e.status==="completed" ? "log-status-completed" : "");
+      statusEl.textContent = statusLabel(e);
+      body.appendChild(dateLine); body.appendChild(intentLine); body.appendChild(statusEl);
+      li.appendChild(dot); li.appendChild(body);
+      els.logList.appendChild(li);
+    });
+  });
+
+  checkResume();
+  showOnly("setup");
+})();
+</script>
